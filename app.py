@@ -50,14 +50,10 @@ def read_root():
     data = request.get_json()
     print("NAAA2 loaded")
     predict_img = []
-    for item in data['image']:
-        #Decode the base64-encoded image
-        encoded_data = item.split(',')[1]
-        image_data = BytesIO(base64.b64decode(encoded_data))
-        pil_image = Image.open(image_data)
-        resized_image = pil_image.resize((150, 150))
-        # # Append the resized image to the list
-        predict_img.append(resized_image)
+    item = data['image'][0]
+    image=get_cv2_image_from_base64_string(item)
+    image = cv2.resize(image,(150,150))
+    predict_img.append(image)
     print("NAAAA3")
     img_array = np.array(predict_img)
     print("NAAAAA4")
