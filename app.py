@@ -1,5 +1,6 @@
 # use fast api taking string as parameter from a get function and converting it to image and then to numpy array and then to a dataframe and then to a prediction and then to a json file and then to a string and then to a response
 from flask import Flask, request
+from tensorflow.keras.models import load_model
 from flask_cors import CORS, cross_origin
 import numpy as np
 import pandas as pd
@@ -23,7 +24,11 @@ cors = CORS(app, resource={
 })
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-loaded_model = tf.keras.models.load_model("braintumorfile.h5")
+weights_path = './braintumorfile.h5'
+loaded_model = load_model(weights_path)
+print("Model loaded successfully.")
+
+
 
 def get_cv2_image_from_base64_string(b64str):
     encoded_data = b64str.split(',')[1]
@@ -38,7 +43,7 @@ def get_image_from_base64_string(b64str):
     img = Image.open(image_data)
     return img
 
-@app.route('/home',methods=['GET'])
+@app.route('/',methods=['GET'])
 def home():
     return "Hello World"
 labels = ['glioma_tumor','meningioma_tumor','no_tumor','pituitary_tumor']
@@ -53,7 +58,7 @@ def read_root():
         predict_img.append(image)
 
     img_array = np.array(predict_img)
-    img_array = img_array.reshape(1,150,150,3)
+    # img_array = img_array.reshape(1,150,150,3)
     prediction = loaded_model.predict(img_array)
     result = prediction.argmax()
     print(result)
