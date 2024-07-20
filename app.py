@@ -53,14 +53,14 @@ def read_root():
     for item in data['image']:
         #Decode the base64-encoded image
         image = get_image_from_base64_string(item)
-        image2 = cv2.resize(image,(150,150))
-        predict_img.append(image2)
+        # image2 = cv2.resize(image,(150,150))
+        predict_img.append(image)
 
     print("NAAAA3")
     img_array = np.array(predict_img)
     print("NAAAAA4")
-    # img_array = img_array.reshape(1,150,150,3)
-    res2 = loaded_model.predict(img_array)
+    img_array2 = img_array.reshape(1,150,150,3)
+    res2 = loaded_model.predict(img_array2)
     res3 = res2.argmax()
     # res2 = 0
     return {"result":labels[res3]}
