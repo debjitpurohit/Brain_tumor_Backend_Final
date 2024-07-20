@@ -17,11 +17,7 @@ import tensorflow as tf
 
 app = Flask(__name__)
 cors = CORS(app)
-cors = CORS(app, resource={
-    r"/*":{
-        "origins":"*"
-    }
-})
+cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 weights_path = './braintumorfile.h5'
@@ -59,12 +55,14 @@ def read_root():
         image = cv2.resize(image,(150,150))
         predict_img.append(image)
 
-    print(predict_img.shape)
+    print(predict_img)
     img_array = np.array(predict_img)
     print(img_array)
     # img_array = img_array.reshape(1,150,150,3)
     res2 = loaded_model.predict(img_array)
-    res2 = res2.argmax()
+    # res2 = res2.argmax()
+    print("no prblm",res2)
+    res2=0
     return {"result":labels[res2]}
 
 
