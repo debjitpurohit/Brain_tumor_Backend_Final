@@ -59,12 +59,9 @@ def read_root():
 
     img_array = np.array(predict_img)
     # img_array = img_array.reshape(1,150,150,3)
-    prediction = loaded_model.predict(img_array)
-    result = prediction.argmax()
-    print(result)
-    print(labels[result])
-
-    return {"result":labels[result]}
+    res2 = loaded_model.predict(img_array)
+    res2 = res2.argmax()
+    return {"result":labels[res2]}
 
 
 if __name__ == '__main__':
